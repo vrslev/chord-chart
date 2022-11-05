@@ -1,6 +1,9 @@
 use std::str::FromStr;
 
-use crate::{Note, note::{Error, Accidental}};
+use crate::{
+    note::{Accidental, Error},
+    Note,
+};
 
 #[derive(Debug, PartialEq)]
 struct Chord {
@@ -28,10 +31,11 @@ impl FromStr for Chord {
         let natural_char = chars.next().map(|c| c.to_ascii_uppercase());
         let accidental_char = chars.next();
 
-        let note = match Note::from_char_values(natural_char, accidental_char.clone()) {
-            Ok(note) => note,
-            Err(err) => return Err(err),
-        };
+        let note =
+            match Note::from_natural_and_accidental_chars(natural_char, accidental_char.clone()) {
+                Ok(note) => note,
+                Err(err) => return Err(err),
+            };
 
         let mut symbols = String::new();
 
