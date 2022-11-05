@@ -3,10 +3,6 @@ pub enum Error {
     NoNatural,
     InvalidNatural(char),
     InvalidNote(&'static str),
-    InvalidSemitone {
-        note_semitone: i32,
-        requested_semitone: i32,
-    },
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -153,35 +149,29 @@ impl Note {
         Self::new(natural, accidental)
     }
 
-    pub fn transpose(&self, semitone_incr: i32, scale: Scale) -> Result<Self, Error> {
+    pub fn transpose(&self, semitone_incr: i32, scale: Scale) -> Self {
         use Semitone::*;
 
-        let note_semitone =
-            (self.natural.clone() as i32 + self.accidental.clone() as i32).rem_euclid(12);
-        let requested_semitone = note_semitone + semitone_incr;
+        let semitone =
+            match (self.natural.clone() as i32 + self.accidental.clone() as i32 + semitone_incr)
+                .rem_euclid(12)
+            {
+                0 => Zero,
+                1 => One,
+                2 => Two,
+                3 => Three,
+                4 => Four,
+                5 => Five,
+                6 => Six,
+                7 => Seven,
+                8 => Eight,
+                9 => Nine,
+                10 => Ten,
+                11 => Eleven,
+                _ => unreachable!(),
+            };
 
-        let semitone = match requested_semitone {
-            0 => Zero,
-            1 => One,
-            2 => Two,
-            3 => Three,
-            4 => Four,
-            5 => Five,
-            6 => Six,
-            7 => Seven,
-            8 => Eight,
-            9 => Nine,
-            10 => Ten,
-            11 => Eleven,
-            _ => {
-                return Err(Error::InvalidSemitone {
-                    note_semitone,
-                    requested_semitone,
-                })
-            }
-        };
-
-        Ok(self.from_semitone_and_scale(semitone, scale))
+        self.from_semitone_and_scale(semitone, scale)
     }
 }
 
