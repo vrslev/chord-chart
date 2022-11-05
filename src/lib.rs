@@ -1,4 +1,4 @@
-mod bar_line;
+mod bar;
 pub mod chord;
 mod error;
 pub mod note;

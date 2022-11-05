@@ -104,6 +104,7 @@ mod tests {
     #[case("g#m", "G#m")]
     #[case("Dbmaj7", "Dbmaj7")]
     #[case("C#m/Db", "C#m/Db")]
+    #[case("C#m/Dbm", "C#m/Db")]
     #[case("C/db", "C/Db")]
     #[case("C/D", "C/D")]
     #[case("C/", "C")]
