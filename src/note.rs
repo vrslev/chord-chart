@@ -48,8 +48,8 @@ impl Note {
                 'B' => B,
                 'H' => {
                     match accidental_char {
-                        Some(c) => match c.to_ascii_lowercase() {
-                            'b' => return Err(Error::InvalidNote("Hb".into())),
+                        Some(c) => match c {
+                            'b' | 'B' => return Err(Error::InvalidNote("Hb".into())),
                             '#' => return Err(Error::InvalidNote("H#".into())),
                             _ => (),
                         },
