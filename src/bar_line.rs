@@ -3,7 +3,7 @@ use std::str::FromStr;
 use crate::{bar::Bar, error::Error, transpose::Transpose};
 
 #[derive(Debug)]
-struct BarLine(Vec<Bar>);
+pub struct BarLine(Vec<Bar>);
 
 impl FromStr for BarLine {
     type Err = Error;
@@ -55,6 +55,12 @@ impl Transpose for BarLine {
                 .map(|b| b.transpose(semitone_incr, scale))
                 .collect(),
         )
+    }
+}
+
+impl BarLine {
+    pub fn is_empty(&self)->bool {
+        self.0.is_empty()
     }
 }
 
