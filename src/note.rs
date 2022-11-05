@@ -2,7 +2,7 @@
 pub enum Error {
     NoNatural,
     InvalidNatural(char),
-    InvalidNote(String),
+    InvalidNote(&'static str),
     InvalidSemitone {
         note_semitone: i32,
         requested_semitone: i32,
@@ -80,8 +80,8 @@ impl Note {
                 'H' => {
                     match accidental_ch {
                         Some(c) => match c {
-                            'b' | 'B' => return Err(Error::InvalidNote("Hb".into())),
-                            '#' => return Err(Error::InvalidNote("H#".into())),
+                            'b' | 'B' => return Err(Error::InvalidNote("Hb")),
+                            '#' => return Err(Error::InvalidNote("H#")),
                             _ => (),
                         },
                         _ => (),
@@ -104,10 +104,10 @@ impl Note {
         };
 
         match (&natural, &accidental) {
-            (C, Flat) => return Err(Error::InvalidNote("Cb".into())),
-            (E, Sharp) => return Err(Error::InvalidNote("E#".into())),
-            (F, Flat) => return Err(Error::InvalidNote("Fb".into())),
-            (B, Sharp) => return Err(Error::InvalidNote("B#".into())),
+            (C, Flat) => return Err(Error::InvalidNote("Cb")),
+            (E, Sharp) => return Err(Error::InvalidNote("E#")),
+            (F, Flat) => return Err(Error::InvalidNote("Fb")),
+            (B, Sharp) => return Err(Error::InvalidNote("B#")),
             _ => (),
         }
 
@@ -217,32 +217,48 @@ impl ToString for Note {
 #[cfg(test)]
 mod tests {
     use super::Accidental::*;
+    use super::Error::*;
     use super::Natural::*;
     use super::*;
+
     use test_case::case;
 
-    #[case(Some('a'), None, Note::new(A, Natural), "A")]
-    #[case(Some('A'), Some('b'), Note::new(A, Flat), "Ab")]
-    #[case(Some('A'), Some('#'), Note::new(A, Sharp), "A#")]
-    #[case(Some('A'), Some('w'), Note::new(A, Natural), "A")]
-    #[case(Some('H'), None, Note::new(B, Natural), "H")]
-    #[case(Some('H'), Some('w'), Note::new(B, Natural), "H")]
-    fn from_natural_and_accidental_chars_ok(natural: Option<char>, accidental: Option<char>, note: Note, str: &str) {
-        let value = Note::from_natural_and_accidental_chars(natural, accidental).unwrap();
-        assert_eq!(value, note);
-        assert_eq!(value.to_string(), str);
+    fn partition_note(value: &str) -> (Option<char>, Option<char>) {
+        let mut chars = value.chars();
+        (chars.next(), chars.next())
     }
 
-    #[case(Some('w'), None, Error::InvalidNatural('w'))]
-    #[case(None, None, Error::NoNatural)]
-    #[case(Some('H'), Some('b'), Error::InvalidNote("Hb".into()))]
-    #[case(Some('H'), Some('#'), Error::InvalidNote("H#".into()))]
-    #[case(Some('c'), Some('B'), Error::InvalidNote("Cb".into()))]
-    #[case(Some('E'), Some('#'), Error::InvalidNote("E#".into()))]
-    #[case(Some('F'), Some('b'), Error::InvalidNote("Fb".into()))]
-    #[case(Some('B'), Some('#'), Error::InvalidNote("B#".into()))]
-    fn from_natural_and_accidental_chars_err(natural: Option<char>, accidental: Option<char>, error: Error) {
-        let value = Note::from_natural_and_accidental_chars(natural, accidental).unwrap_err();
+    #[case(A, Natural, "a", "A")]
+    #[case(A, Flat, "AB", "Ab")]
+    #[case(A, Sharp, "A#", "A#")]
+    #[case(A, Natural, "Aw", "A")]
+    #[case(B, Natural, "H", "H")]
+    #[case(B, Natural, "Hw", "H")]
+    fn from_natural_and_accidental_chars_ok(
+        natural: super::Natural,
+        accidental: Accidental,
+        input: &str,
+        output: &str,
+    ) {
+        let (natural_ch, accidental_ch) = partition_note(input);
+        let value = Note::from_natural_and_accidental_chars(natural_ch, accidental_ch).unwrap();
+        assert_eq!(value, Note::new(natural, accidental));
+        assert_eq!(value.to_string(), output);
+    }
+
+    #[case("w", InvalidNatural('w'))]
+    #[case("", NoNatural)]
+    #[case("Hb", InvalidNote("Hb"))]
+    #[case("H#", InvalidNote("H#"))]
+    #[case("cB", InvalidNote("Cb"))]
+    #[case("E#", InvalidNote("E#"))]
+    #[case("Fb", InvalidNote("Fb"))]
+    #[case("B#", InvalidNote("B#"))]
+    fn from_natural_and_accidental_chars_err(input: &str, error: Error) {
+        let (natural_ch, accidental_ch) = partition_note(input);
+        let value = Note::from_natural_and_accidental_chars(natural_ch, accidental_ch).unwrap_err();
         assert_eq!(value, error);
     }
+
+    // fn transpose_ok(str)
 }
