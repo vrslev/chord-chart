@@ -90,6 +90,35 @@ impl Note {
     }
 }
 
+impl ToString for Note {
+    fn to_string(&self) -> String {
+        use crate::note::Natural::*;
+        use Accidental::*;
+
+        if let (B, Natural) = (&self.natural, &self.accidental) {
+            "H".into()
+        } else {
+            let natural = match self.natural {
+                C => "C",
+                D => "D",
+                E => "E",
+                F => "F",
+                G => "G",
+                A => "A",
+                B => "B",
+            };
+
+            let accidental = match self.accidental {
+                Natural => "",
+                Flat => "b",
+                Sharp => "#",
+            };
+
+            String::from(natural) + accidental
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Accidental::*;
@@ -97,28 +126,28 @@ mod tests {
     use super::*;
     use test_case::case;
 
-    #[case(Some('w'), None, Err(Error::InvalidNatural('w')))]
-    #[case(None, None, Err(Error::NoNatural))]
-    #[case(Some('a'), None, Ok(Note { natural: A, accidental: Natural}))]
-    #[case(Some('A'), Some('b'), Ok(Note { natural: A, accidental: Flat}))]
-    #[case(Some('A'), Some('#'), Ok(Note { natural: A, accidental: Sharp}))]
-    #[case(Some('A'), Some('w'), Ok(Note { natural: A, accidental: Natural}))]
-    #[case(Some('H'), None, Ok(Note { natural: B, accidental: Natural}))]
-    #[case(Some('H'), Some('w'), Ok(Note { natural: B, accidental: Natural}))]
-    #[case(Some('H'), Some('b'), Err(Error::InvalidNote("Hb".into())))]
-    #[case(Some('H'), Some('#'), Err(Error::InvalidNote("H#".into())))]
-    #[case(Some('c'), Some('B'), Err(Error::InvalidNote("Cb".into())))]
-    #[case(Some('E'), Some('#'), Err(Error::InvalidNote("E#".into())))]
-    #[case(Some('F'), Some('b'), Err(Error::InvalidNote("Fb".into())))]
-    #[case(Some('B'), Some('#'), Err(Error::InvalidNote("B#".into())))]
-    fn note(
-        natural_char: Option<char>,
-        accidental_char: Option<char>,
-        result: Result<Note, Error>,
-    ) {
-        assert_eq!(
-            Note::from_char_values(natural_char, accidental_char),
-            result
-        );
+    #[case(Some('a'), None, Note { natural: A, accidental: Natural}, "A")]
+    #[case(Some('A'), Some('b'), Note { natural: A, accidental: Flat}, "Ab")]
+    #[case(Some('A'), Some('#'), Note { natural: A, accidental: Sharp}, "A#")]
+    #[case(Some('A'), Some('w'), Note { natural: A, accidental: Natural}, "A")]
+    #[case(Some('H'), None, Note { natural: B, accidental: Natural}, "H")]
+    #[case(Some('H'), Some('w'), Note { natural: B, accidental: Natural}, "H")]
+    fn ok(natural: Option<char>, accidental: Option<char>, note: Note, str: &str) {
+        let value = Note::from_char_values(natural, accidental).unwrap();
+        assert_eq!(value, note);
+        assert_eq!(value.to_string(), str);
+    }
+
+    #[case(Some('w'), None, Error::InvalidNatural('w'))]
+    #[case(None, None, Error::NoNatural)]
+    #[case(Some('H'), Some('b'), Error::InvalidNote("Hb".into()))]
+    #[case(Some('H'), Some('#'), Error::InvalidNote("H#".into()))]
+    #[case(Some('c'), Some('B'), Error::InvalidNote("Cb".into()))]
+    #[case(Some('E'), Some('#'), Error::InvalidNote("E#".into()))]
+    #[case(Some('F'), Some('b'), Error::InvalidNote("Fb".into()))]
+    #[case(Some('B'), Some('#'), Error::InvalidNote("B#".into()))]
+    fn err(natural: Option<char>, accidental: Option<char>, error: Error) {
+        let value = Note::from_char_values(natural, accidental).unwrap_err();
+        assert_eq!(value, error);
     }
 }
