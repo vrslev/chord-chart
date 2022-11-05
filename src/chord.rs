@@ -1,4 +1,4 @@
-use crate::note::{Accidental, Error, Note};
+use crate::note::{Accidental, Error, Note, Scale};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq)]
@@ -82,9 +82,22 @@ impl ToString for Chord {
     }
 }
 
+impl Chord {
+    fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
+        Self::new(
+            Note::transpose(&self.note, &semitone_incr, &scale),
+            &self.symbols,
+            self.bass_note
+                .as_ref()
+                .map(|note| note.transpose(semitone_incr, scale)),
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Error::*;
+    use super::Scale::*;
     use super::*;
     use test_case::case;
 
@@ -106,5 +119,19 @@ mod tests {
     #[case("A//", InvalidNatural('/'))]
     fn basics_err(input: &str, error: Error) {
         assert_eq!(Chord::from_str(input).unwrap_err(), error);
+    }
+
+    #[case("A", 1, Major, "A#")]
+    #[case("C#m/D", 1, Major, "Dm/D#")]
+    #[case("C#m/D", 12, Major, "C#m/D")]
+    #[case("A/D", 4, Minor, "Db/Gb")]
+    fn tranpose(input: &str, semitone_incr: i32, scale: Scale, output: &str) {
+        assert_eq!(
+            Chord::from_str(input)
+                .unwrap()
+                .transpose(&semitone_incr, &scale)
+                .to_string(),
+            output
+        )
     }
 }

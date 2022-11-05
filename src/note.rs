@@ -107,7 +107,7 @@ impl Note {
         Ok(Self::new(natural, accidental))
     }
 
-    fn from_semitone_and_scale(&self, semitone: Semitone, scale: Scale) -> Self {
+    fn from_semitone_and_scale(&self, semitone: &Semitone, scale: &Scale) -> Self {
         use self::Natural::*;
         use Accidental::*;
         use Semitone::*;
@@ -146,7 +146,7 @@ impl Note {
         Self::new(natural, accidental)
     }
 
-    pub fn transpose(&self, semitone_incr: i32, scale: Scale) -> Self {
+    pub fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         use Semitone::*;
 
         let semitone =
@@ -168,7 +168,7 @@ impl Note {
                 _ => unreachable!(),
             };
 
-        self.from_semitone_and_scale(semitone, scale)
+        self.from_semitone_and_scale(&semitone, scale)
     }
 }
 
@@ -248,6 +248,7 @@ mod tests {
 
     #[case("A", 12, Major, "A")]
     #[case("C", 1, Major, "C#")]
+    #[case("C", -1, Minor, "H")]
     #[case("D", 2, Major, "E")]
     #[case("E", 2, Major, "F#")]
     #[case("E", 2, Minor, "Gb")]
@@ -255,6 +256,6 @@ mod tests {
     #[case("Bb", 1, Minor, "H")]
     fn transpose(input: &str, semitone_incr: i32, scale: Scale, output: &str) {
         let value = note_from_str(input).unwrap();
-        assert_eq!(value.transpose(semitone_incr, scale).to_string(), output)
+        assert_eq!(value.transpose(&semitone_incr, &scale).to_string(), output)
     }
 }
