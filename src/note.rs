@@ -30,6 +30,13 @@ pub struct Note {
 }
 
 impl Note {
+    pub fn new(natural: Natural, accidental: Accidental) -> Self {
+        Self {
+            natural,
+            accidental,
+        }
+    }
+
     pub fn from_char_values(
         natural_char: Option<char>,
         accidental_char: Option<char>,
@@ -56,10 +63,7 @@ impl Note {
                         _ => (),
                     }
 
-                    return Ok(Self {
-                        natural: B,
-                        accidental: Natural,
-                    });
+                    return Ok(Self::new(B, Natural));
                 }
                 _ => return Err(Error::InvalidNatural(c)),
             },
@@ -83,10 +87,7 @@ impl Note {
             _ => (),
         }
 
-        Ok(Self {
-            natural,
-            accidental,
-        })
+        Ok(Self::new(natural, accidental))
     }
 }
 
@@ -126,12 +127,12 @@ mod tests {
     use super::*;
     use test_case::case;
 
-    #[case(Some('a'), None, Note { natural: A, accidental: Natural}, "A")]
-    #[case(Some('A'), Some('b'), Note { natural: A, accidental: Flat}, "Ab")]
-    #[case(Some('A'), Some('#'), Note { natural: A, accidental: Sharp}, "A#")]
-    #[case(Some('A'), Some('w'), Note { natural: A, accidental: Natural}, "A")]
-    #[case(Some('H'), None, Note { natural: B, accidental: Natural}, "H")]
-    #[case(Some('H'), Some('w'), Note { natural: B, accidental: Natural}, "H")]
+    #[case(Some('a'), None, Note::new(A, Natural), "A")]
+    #[case(Some('A'), Some('b'), Note::new(A, Flat), "Ab")]
+    #[case(Some('A'), Some('#'), Note::new(A, Sharp), "A#")]
+    #[case(Some('A'), Some('w'), Note::new(A, Natural), "A")]
+    #[case(Some('H'), None, Note::new(B, Natural), "H")]
+    #[case(Some('H'), Some('w'), Note::new(B, Natural), "H")]
     fn ok(natural: Option<char>, accidental: Option<char>, note: Note, str: &str) {
         let value = Note::from_char_values(natural, accidental).unwrap();
         assert_eq!(value, note);
