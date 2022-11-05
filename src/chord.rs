@@ -1,9 +1,5 @@
+use crate::note::{Accidental, Error, Note};
 use std::str::FromStr;
-
-use crate::{
-    note::{Accidental, Error},
-    Note,
-};
 
 #[derive(Debug, PartialEq)]
 struct Chord {
@@ -28,29 +24,29 @@ impl FromStr for Chord {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut chars = s.chars();
 
-        let natural_char = chars.next().map(|c| c.to_ascii_uppercase());
-        let accidental_char = chars.next();
+        let (natural_ch, accidental_ch) = (chars.next(), chars.next());
 
-        let note =
-            match Note::from_natural_and_accidental_chars(natural_char, accidental_char.clone()) {
-                Ok(note) => note,
-                Err(err) => return Err(err),
-            };
+        let note = match Note::parse(natural_ch, accidental_ch) {
+            Ok(note) => note,
+            Err(err) => return Err(err),
+        };
 
-        let mut symbols = String::new();
-
+        let mut remaining_symbols = String::new();
         if note.accidental == Accidental::Natural {
-            if let Some(not_accidental) = accidental_char {
-                symbols.push(not_accidental)
+            if let Some(ch) = accidental_ch {
+                // Accidental char wasn't actually an accidental
+                remaining_symbols.push(ch)
             }
         }
+        remaining_symbols.push_str(chars.as_str());
 
         let mut building_bass_note = false;
-        let mut bass_note_val = String::new();
+        let mut bass_note_value = String::new();
+        let mut symbols = String::new();
 
-        for char in chars.into_iter() {
+        for char in remaining_symbols.chars().into_iter() {
             if building_bass_note {
-                bass_note_val.push(char);
+                bass_note_value.push(char);
             } else if char == '/' {
                 building_bass_note = true;
             } else {
@@ -58,10 +54,16 @@ impl FromStr for Chord {
             }
         }
 
-        let bass_note = if bass_note_val == "" {
+        let bass_note = if bass_note_value.is_empty() {
             None
         } else {
-            Chord::from_str(&bass_note_val).map(|v| v.note).ok()
+            let mut chars = bass_note_value.chars();
+
+            match Note::parse(chars.next(), chars.next()) {
+                Ok(note) => Some(note),
+                Err(Error::NoNatural) => None,
+                Err(err) => return Err(err),
+            }
         };
 
         Ok(Chord::new(note, &symbols, bass_note))
@@ -70,70 +72,39 @@ impl FromStr for Chord {
 
 impl ToString for Chord {
     fn to_string(&self) -> String {
-        use crate::note::Natural::*;
-        use Accidental::*;
+        let note = self.note.to_string();
 
-        let s = if let (B, Natural) = (&self.note.natural, &self.note.accidental) {
-            String::from("H")
+        if let Some(bass_note) = &self.bass_note {
+            note + &self.symbols + "/" + &bass_note.to_string()
         } else {
-            let natural = match self.note.natural {
-                C => "C",
-                D => "D",
-                E => "E",
-                F => "F",
-                G => "G",
-                A => "A",
-                B => "B",
-            };
-
-            let accidental = match self.note.accidental {
-                Natural => "",
-                Flat => "b",
-                Sharp => "#",
-            };
-
-            String::from(natural) + accidental
-        };
-
-        s + &self.symbols
+            note + &self.symbols
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    // use super::*;
-    // use crate::note::Accidental::*;
-    // use crate::note::Natural::*;
-    // use test_case::case;
+    use super::Error::*;
+    use super::*;
+    use test_case::case;
 
-    // #[case(Chord::new(Natural::A, Accidental::Natural, "", None), "A", "A")]
-    // #[case(Chord::new(Natural::G, Accidental::Sharp, "m", None), "g#m", "G#m")]
-    // #[case(
-    //     Chord::new(Natural::D, Accidental::Flat, "maj7", None),
-    //     "Dbmaj7",
-    //     "Dbmaj7"
-    // )]
-    // fn basics(expected_chord: Chord, input_str: &str, pretty_str: &str) {
-    //     let chord = Chord::from_str(input_str).unwrap();
-    //     assert_eq!(chord, expected_chord);
-    //     assert_eq!(chord.to_string(), pretty_str);
-    // }
-    // #[test]
-    // fn bass_note() {
-    //     let chord = Chord::from_str("C#m/Db").unwrap();
-    //     assert_eq!(
-    //         chord,
-    //         Chord::new(
-    //             Natural::C,
-    //             Accidental::Sharp,
-    //             "m",
-    //             Some(Note {
-    //                 natural: Natural::D,
-    //                 accidental: Accidental::Flat
-    //             })
-    //         )
-    //     )
-    // }
+    #[case("A", "A")]
+    #[case("g#m", "G#m")]
+    #[case("Dbmaj7", "Dbmaj7")]
+    #[case("C#m/Db", "C#m/Db")]
+    #[case("C/db", "C/Db")]
+    #[case("C/D", "C/D")]
+    #[case("C/", "C")]
+    fn basics_ok(input: &str, output: &str) {
+        assert_eq!(Chord::from_str(input).unwrap().to_string(), output);
+    }
+
+    #[case("w", InvalidNatural('w'))]
+    #[case("E#", InvalidNote("E#"))]
+    #[case("C/E#", InvalidNote("E#"))]
+    #[case("C/W#", InvalidNatural('W'))]
+    #[case("A//", InvalidNatural('/'))]
+    fn basics_err(input: &str, error: Error) {
+        assert_eq!(Chord::from_str(input).unwrap_err(), error);
+    }
 }
-
-// TODO: "Implement bass note"

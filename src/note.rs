@@ -57,10 +57,7 @@ impl Note {
         }
     }
 
-    pub fn from_natural_and_accidental_chars(
-        natural_ch: Option<char>,
-        accidental_ch: Option<char>,
-    ) -> Result<Self, Error> {
+    pub fn parse(natural_ch: Option<char>, accidental_ch: Option<char>) -> Result<Self, Error> {
         use self::Natural::*;
         use Accidental::*;
 
@@ -216,7 +213,7 @@ mod tests {
 
     fn note_from_str(value: &str) -> Result<Note, Error> {
         let mut chars = value.chars();
-        Note::from_natural_and_accidental_chars(chars.next(), chars.next())
+        Note::parse(chars.next(), chars.next())
     }
 
     #[case(A, Natural, "a", "A")]
@@ -225,7 +222,7 @@ mod tests {
     #[case(A, Natural, "Aw", "A")]
     #[case(B, Natural, "H", "H")]
     #[case(B, Natural, "Hw", "H")]
-    fn from_natural_and_accidental_chars_ok(
+    fn basics_ok(
         natural: super::Natural,
         accidental: Accidental,
         input: &str,
@@ -244,7 +241,7 @@ mod tests {
     #[case("E#", InvalidNote("E#"))]
     #[case("Fb", InvalidNote("Fb"))]
     #[case("B#", InvalidNote("B#"))]
-    fn from_natural_and_accidental_chars_err(input: &str, error: Error) {
+    fn basics_err(input: &str, error: Error) {
         let value = note_from_str(input).unwrap_err();
         assert_eq!(value, error);
     }
