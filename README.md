@@ -7,4 +7,5 @@ WIP.
 | Bm A/C# | D G | Bm A |
 ```
 
+Will be used in [vrslev/songbook](https://github.com/vrslev/songbook)
 Partially based on [Staff](https://docs.rs/staff).
