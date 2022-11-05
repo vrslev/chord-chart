@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use crate::{bar_line::BarLine, error::Error, transpose::Transpose};
 
-struct Chart(Vec<BarLine>);
+pub struct Chart(Vec<BarLine>);
 
 impl FromStr for Chart {
     type Err = Error;

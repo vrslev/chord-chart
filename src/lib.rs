@@ -1,7 +1,11 @@
+/// Note -> Chord -> Bar -> Bar Line -> Chart
 mod bar;
 mod bar_line;
 mod chart;
-pub mod chord;
+mod chord;
 mod error;
-pub mod note;
+mod note;
 mod transpose;
+
+pub use chart::Chart;
+pub use error::Error;

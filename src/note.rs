@@ -20,8 +20,8 @@ pub enum Accidental {
 
 #[derive(Debug, PartialEq)]
 pub struct Note {
-    pub natural: Natural,
-    pub accidental: Accidental,
+    natural: Natural,
+    accidental: Accidental,
 }
 
 enum Semitone {
@@ -45,11 +45,15 @@ pub enum Scale {
 }
 
 impl Note {
-    pub fn new(natural: Natural, accidental: Accidental) -> Self {
+    fn new(natural: Natural, accidental: Accidental) -> Self {
         Self {
             natural,
             accidental,
         }
+    }
+
+    pub fn accidental(&self) -> &Accidental {
+        &self.accidental
     }
 
     pub fn parse(natural_ch: Option<char>, accidental_ch: Option<char>) -> Result<Self, Error> {

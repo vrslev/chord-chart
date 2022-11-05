@@ -31,7 +31,7 @@ impl FromStr for Chord {
         let note = Note::parse(natural_ch, accidental_ch)?;
 
         let mut remaining_symbols = String::new();
-        if note.accidental == Accidental::Natural {
+        if note.accidental() == &Accidental::Natural {
             if let Some(ch) = accidental_ch {
                 // Accidental char wasn't actually an accidental
                 remaining_symbols.push(ch)
