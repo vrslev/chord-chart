@@ -3,7 +3,8 @@ use crate::error::Error;
 use crate::transpose::Transpose;
 use std::str::FromStr;
 
-struct Bar(Vec<Chord>);
+#[derive(Debug)]
+pub struct Bar(Vec<Chord>);
 
 impl FromStr for Bar {
     type Err = Error;
@@ -39,9 +40,8 @@ impl Transpose for Bar {
 
 #[cfg(test)]
 mod tests {
-    use crate::note::Scale;
-
     use super::*;
+    use crate::note::Scale;
     use test_case::case;
 
     #[case("C Dm/F#", "C Dm/F#")]
