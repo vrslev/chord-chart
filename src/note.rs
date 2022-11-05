@@ -1,9 +1,4 @@
-#[derive(Debug, PartialEq)]
-pub enum Error {
-    NoNatural,
-    InvalidNatural(char),
-    InvalidNote(&'static str),
-}
+use crate::{error::Error, transpose::Transpose};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Natural {
@@ -145,8 +140,10 @@ impl Note {
 
         Self::new(natural, accidental)
     }
+}
 
-    pub fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
+impl Transpose for Note {
+    fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         use Semitone::*;
 
         let semitone =
@@ -222,12 +219,7 @@ mod tests {
     #[case(A, Natural, "Aw", "A")]
     #[case(B, Natural, "H", "H")]
     #[case(B, Natural, "Hw", "H")]
-    fn basics_ok(
-        natural: super::Natural,
-        accidental: Accidental,
-        input: &str,
-        output: &str,
-    ) {
+    fn basics_ok(natural: super::Natural, accidental: Accidental, input: &str, output: &str) {
         let value = note_from_str(input).unwrap();
         assert_eq!(value, Note::new(natural, accidental));
         assert_eq!(value.to_string(), output);

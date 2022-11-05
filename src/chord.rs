@@ -1,8 +1,10 @@
-use crate::note::{Accidental, Error, Note, Scale};
+use crate::error::Error;
+use crate::note::{Accidental, Note, Scale};
+use crate::transpose::Transpose;
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq)]
-struct Chord {
+pub struct Chord {
     note: Note,
     symbols: String,
     bass_note: Option<Note>,
@@ -26,10 +28,7 @@ impl FromStr for Chord {
 
         let (natural_ch, accidental_ch) = (chars.next(), chars.next());
 
-        let note = match Note::parse(natural_ch, accidental_ch) {
-            Ok(note) => note,
-            Err(err) => return Err(err),
-        };
+        let note = Note::parse(natural_ch, accidental_ch)?;
 
         let mut remaining_symbols = String::new();
         if note.accidental == Accidental::Natural {
@@ -82,7 +81,7 @@ impl ToString for Chord {
     }
 }
 
-impl Chord {
+impl Transpose for Chord {
     fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         Self::new(
             Note::transpose(&self.note, &semitone_incr, &scale),
