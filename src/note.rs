@@ -209,13 +209,14 @@ mod tests {
     use super::Accidental::*;
     use super::Error::*;
     use super::Natural::*;
+    use super::Scale::*;
     use super::*;
 
     use test_case::case;
 
-    fn partition_note(value: &str) -> (Option<char>, Option<char>) {
+    fn note_from_str(value: &str) -> Result<Note, Error> {
         let mut chars = value.chars();
-        (chars.next(), chars.next())
+        Note::from_natural_and_accidental_chars(chars.next(), chars.next())
     }
 
     #[case(A, Natural, "a", "A")]
@@ -230,8 +231,7 @@ mod tests {
         input: &str,
         output: &str,
     ) {
-        let (natural_ch, accidental_ch) = partition_note(input);
-        let value = Note::from_natural_and_accidental_chars(natural_ch, accidental_ch).unwrap();
+        let value = note_from_str(input).unwrap();
         assert_eq!(value, Note::new(natural, accidental));
         assert_eq!(value.to_string(), output);
     }
@@ -245,10 +245,19 @@ mod tests {
     #[case("Fb", InvalidNote("Fb"))]
     #[case("B#", InvalidNote("B#"))]
     fn from_natural_and_accidental_chars_err(input: &str, error: Error) {
-        let (natural_ch, accidental_ch) = partition_note(input);
-        let value = Note::from_natural_and_accidental_chars(natural_ch, accidental_ch).unwrap_err();
+        let value = note_from_str(input).unwrap_err();
         assert_eq!(value, error);
     }
 
-    // fn transpose_ok(str)
+    #[case("A", 12, Major, "A")]
+    #[case("C", 1, Major, "C#")]
+    #[case("D", 2, Major, "E")]
+    #[case("E", 2, Major, "F#")]
+    #[case("E", 2, Minor, "Gb")]
+    #[case("A", 11, Major, "G#")]
+    #[case("Bb", 1, Minor, "H")]
+    fn transpose(input: &str, semitone_incr: i32, scale: Scale, output: &str) {
+        let value = note_from_str(input).unwrap();
+        assert_eq!(value.transpose(semitone_incr, scale).to_string(), output)
+    }
 }
