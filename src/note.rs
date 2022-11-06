@@ -1,4 +1,5 @@
 use crate::{error::Error, transpose::Transpose};
+use std::str::FromStr;
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Natural {
@@ -16,6 +17,15 @@ pub enum Accidental {
     Natural = 0,
     Flat = -1,
     Sharp = 1,
+}
+
+impl Accidental {
+    pub fn scale(&self) -> Scale {
+        match self {
+            Self::Flat => Scale::Minor,
+            _ => Scale::Major,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -144,6 +154,20 @@ impl Note {
 
         Self::new(natural, accidental)
     }
+
+    pub fn get_semitones_diff(&self, note: &Self) -> i32 {
+        (note.natural.clone() as i32 + note.accidental.clone() as i32)
+            - (self.natural.clone() as i32 + self.accidental.clone() as i32)
+    }
+}
+
+impl FromStr for Note {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut chars = s.chars();
+        Note::parse(chars.next(), chars.next())
+    }
 }
 
 impl Transpose for Note {
@@ -212,11 +236,6 @@ mod tests {
 
     use test_case::case;
 
-    fn note_from_str(value: &str) -> Result<Note, Error> {
-        let mut chars = value.chars();
-        Note::parse(chars.next(), chars.next())
-    }
-
     #[case(A, Natural, "a", "A")]
     #[case(A, Flat, "AB", "Ab")]
     #[case(A, Sharp, "A#", "A#")]
@@ -224,7 +243,7 @@ mod tests {
     #[case(B, Natural, "H", "H")]
     #[case(B, Natural, "Hw", "H")]
     fn basics_ok(natural: super::Natural, accidental: Accidental, input: &str, output: &str) {
-        let value = note_from_str(input).unwrap();
+        let value = Note::from_str(input).unwrap();
         assert_eq!(value, Note::new(natural, accidental));
         assert_eq!(value.to_string(), output);
     }
@@ -238,7 +257,7 @@ mod tests {
     #[case("Fb", InvalidNote("Fb"))]
     #[case("B#", InvalidNote("B#"))]
     fn basics_err(input: &str, error: Error) {
-        let value = note_from_str(input).unwrap_err();
+        let value = Note::from_str(input).unwrap_err();
         assert_eq!(value, error);
     }
 
@@ -251,7 +270,20 @@ mod tests {
     #[case("A", 11, Major, "G#")]
     #[case("Bb", 1, Minor, "H")]
     fn transpose(input: &str, semitone_incr: i32, scale: Scale, output: &str) {
-        let value = note_from_str(input).unwrap();
+        let value = Note::from_str(input).unwrap();
         assert_eq!(value.transpose(&semitone_incr, &scale).to_string(), output)
+    }
+
+    #[case("C", "C", 0)]
+    #[case("C", "C#", 1)]
+    #[case("C", "H", 11)]
+    #[case("C", "G#", 8)]
+    fn get_semitones_diff(note1: &str, note2: &str, output: i32) {
+        assert_eq!(
+            Note::from_str(note1)
+                .unwrap()
+                .get_semitones_diff(&Note::from_str(note2).unwrap()),
+            output
+        )
     }
 }
