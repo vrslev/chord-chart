@@ -1,0 +1,15 @@
+[package]
+name = "chord-chart-py"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.maturin]
+name = "chord_chart._chord_chart"
+
+[lib]
+name = "_chord_chart"
+crate-type = ["cdylib"]
+
+[dependencies]
+chord-chart = { path = "../chord-chart" }
+pyo3 = { version = "0.17.1", features = ["extension-module"] }

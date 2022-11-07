@@ -1,0 +1,7 @@
+[package]
+name = "chord-chart"
+version = "0.1.0"
+edition = "2021"
+
+[dev-dependencies]
+test-case = "2.2.1"
