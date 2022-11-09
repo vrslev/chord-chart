@@ -7,5 +7,5 @@ def test_validate_chart_ok():
 
 
 def test_validate_chart_throws():
-    with pytest.raises(ValidationError):
-        validate_chart("Whatever")
+    with pytest.raises(ValidationError, match="bar line should start with stripe: C"):
+        validate_chart("C")

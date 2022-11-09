@@ -52,7 +52,7 @@ fn transpose_chart(chart: &str, current_key: &str, new_key: &str) -> Result<Stri
 
 #[pymodule]
 #[pyo3(name = "_chord_chart")]
-fn chord_chart_py(py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn module(py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(validate_chart, m)?)?;
     m.add_function(wrap_pyfunction!(transpose_chart, m)?)?;
     m.add("ValidationError", py.get_type::<ValidationError>())?;
