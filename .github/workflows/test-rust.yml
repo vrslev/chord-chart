@@ -1,0 +1,30 @@
+name: Test Rust
+
+on:
+  push:
+    paths:
+      - chord-chart/**
+    branches:
+      - main
+  pull_request:
+    paths:
+      - chord-chart/**
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: chord-chart
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup update stable && rustup default stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --verbose
+      - run: cargo test --verbose
