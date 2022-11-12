@@ -3,6 +3,10 @@ name: CI
 on:
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: chord-chart-py
+
 jobs:
   linux:
     runs-on: ubuntu-latest
