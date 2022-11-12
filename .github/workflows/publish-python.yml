@@ -3,10 +3,6 @@ name: Publish Python
 on:
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: chord-chart-py
-
 jobs:
   linux:
     runs-on: ubuntu-latest
@@ -16,7 +12,7 @@ jobs:
         with:
           manylinux: auto
           command: build
-          args: --release --sdist -o dist --find-interpreter
+          args: --release --sdist -o dist --find-interpreter -m chord-chart-py/Cargo.toml
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
@@ -30,7 +26,7 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: build
-          args: --release -o dist --find-interpreter
+          args: --release -o dist --find-interpreter -m chord-chart-py/Cargo.toml
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
@@ -44,7 +40,7 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: build
-          args: --release -o dist --universal2 --find-interpreter
+          args: --release -o dist --universal2 --find-interpreter -m chord-chart-py/Cargo.toml
       - name: Upload wheels
         uses: actions/upload-artifact@v3
         with:
@@ -66,4 +62,4 @@ jobs:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
-          args: --skip-existing *
+          args: --skip-existing * -m chord-chart-py/Cargo.toml
