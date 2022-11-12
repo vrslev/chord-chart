@@ -61,4 +61,4 @@ jobs:
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
-          args: --skip-existing * -m chord-chart-py/Cargo.toml
+          args: --skip-existing * -- -m chord-chart-py/Cargo.toml
