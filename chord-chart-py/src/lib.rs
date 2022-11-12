@@ -33,9 +33,8 @@ impl From<Error> for PyErr {
 }
 
 #[pyfunction]
-fn validate_chart(value: &str) -> Result<(), Error> {
-    chord_chart::Chart::from_str(value)?;
-    Ok(())
+fn validate_chart(value: &str) -> Result<String, Error> {
+    Ok(chord_chart::Chart::from_str(value)?.to_string())
 }
 
 #[pyfunction]
