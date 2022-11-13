@@ -9,20 +9,20 @@ create_exception!(_chord_chart, ValidationError, PyException);
 struct Error(chord_chart::Error);
 
 impl From<chord_chart::Error> for Error {
-    fn from(other: chord_chart::Error) -> Self {
-        Self(other)
+    fn from(error: chord_chart::Error) -> Self {
+        Self(error)
     }
 }
 
 impl From<Error> for PyErr {
-    fn from(err: Error) -> PyErr {
-        ValidationError::new_err(err.0.to_string())
+    fn from(error: Error) -> Self {
+        ValidationError::new_err(error.0.to_string())
     }
 }
 
 #[pyfunction]
-fn validate_chart(value: &str) -> Result<String, Error> {
-    Ok(chord_chart::Chart::from_str(value)?.to_string())
+fn validate_chart(chart: &str) -> Result<String, Error> {
+    Ok(chord_chart::Chart::from_str(chart)?.to_string())
 }
 
 #[pyfunction]
