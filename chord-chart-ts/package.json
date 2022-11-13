@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "node build.js",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "build-test": "npm run build && npm run test"
   }
 }
