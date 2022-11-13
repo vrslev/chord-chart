@@ -16,19 +16,7 @@ impl From<chord_chart::Error> for Error {
 
 impl From<Error> for PyErr {
     fn from(err: Error) -> PyErr {
-        use chord_chart::Error::*;
-
-        let str: String = match &err.0 {
-            NoNatural => "no natural".into(),
-            InvalidNatural(natural) => format!("invalid natural: {natural}"),
-            InvalidNote(note) => format!("invalid note: {note}"),
-            BarLineShouldStartWithStripe(line) => {
-                format!("bar line should start with stripe: {line}")
-            }
-            BarLineShouldEndWithStripe(line) => format!("bar line should end with stripe: {line}"),
-        };
-
-        ValidationError::new_err(str)
+        ValidationError::new_err(err.0.to_string())
     }
 }
 
