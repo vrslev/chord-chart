@@ -7,6 +7,6 @@ for (const [target, dir] of [
   ["nodejs", "pkg.node"],
   ["web", "pkg.web"],
 ]) {
-  sh.exec(`wasm-pack build --target ${target} --out-dir ${dir}`);
+  sh.exec(`wasm-pack build --target ${target} --out-dir ${dir} --release`);
   sh.rm(`${dir}/{LICENSE,package.json,README.md,.gitignore}`);
 }
