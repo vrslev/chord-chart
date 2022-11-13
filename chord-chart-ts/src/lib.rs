@@ -3,9 +3,6 @@ use std::{fmt, str::FromStr};
 use chord_chart::Transpose;
 use wasm_bindgen::prelude::*;
 
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[derive(Debug)]
 struct Error(chord_chart::Error);
 
