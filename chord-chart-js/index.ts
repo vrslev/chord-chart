@@ -1,5 +1,5 @@
-import { initSync, transposeChart, validateChart } from "./pkg/chord_chart_ts";
-import wasm from "./pkg/chord_chart_ts_bg.wasm";
+import { initSync, transposeChart, validateChart } from "./pkg/chord_chart_js";
+import wasm from "./pkg/chord_chart_js_bg.wasm";
 
 type ErrorType =
   | "NoNatural"

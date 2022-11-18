@@ -1,5 +1,5 @@
 [workspace]
-members = ["chord-chart", "chord-chart-py", "chord-chart-ts"]
+members = ["chord-chart", "chord-chart-py", "chord-chart-js"]
 
 [profile.release]
 lto = true

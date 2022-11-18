@@ -1,5 +1,5 @@
 [package]
-name = "chord-chart-ts"
+name = "chord-chart-js"
 version = "0.0.0"
 edition = "2021"
 
