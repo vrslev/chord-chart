@@ -3,8 +3,11 @@
 install:
 	python3.11 -m venv .venv
 	.venv/bin/pip install maturin
-	.venv/bin/pip install -e .[test]
+	.venv/bin/pip install -e .[test,pyright]
 
 test:
 	VIRTUAL_ENV=.venv .venv/bin/maturin develop
 	.venv/bin/pytest --color=yes
+
+pyright:
+	.venv/bin/pyright

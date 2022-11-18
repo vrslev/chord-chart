@@ -1,4 +1,5 @@
 import pytest
+
 from chord_chart import transpose_chart
 from chord_chart._chord_chart import ValidationError, validate_chart
 

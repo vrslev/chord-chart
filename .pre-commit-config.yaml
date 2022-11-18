@@ -1,0 +1,45 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-toml
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.2.2
+    hooks:
+      - id: pyupgrade
+        args: [--py37-plus, --keep-runtime-typing]
+
+  - repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright
+        language: system
+        types_or: [python]
+        pass_filenames: false
+        entry: cd chord-chart-py && make pyright
+
+      - id: tsc
+        name: tsc
+        language: system
+        types_or: [javascript, ts]
+        pass_filenames: false
+        entry: cd chord-chart-js && npx tsc --noEmit
+
+      - id: prettier
+        name: prettier
+        language: system
+        types_or: [javascript, ts, json, yaml]
+        entry: cd chord-chart-js && npx prettier --write --list-different --ignore-unknown
