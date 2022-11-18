@@ -1,36 +1,46 @@
-use std::{fmt, str::FromStr};
+use std::str::FromStr;
 
 use chord_chart::Transpose;
 use wasm_bindgen::prelude::*;
 
-#[derive(Debug)]
-struct Error(chord_chart::Error);
+#[wasm_bindgen(module = "@index")]
+extern "C" {
+    #[wasm_bindgen]
+    type ValidationError;
 
-impl std::error::Error for Error {}
-
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.0.fmt(f)
-    }
+    #[wasm_bindgen(constructor)]
+    fn new(type_: &str, value: Option<&str>) -> ValidationError;
 }
 
-impl From<chord_chart::Error> for Error {
+impl From<chord_chart::Error> for ValidationError {
     fn from(error: chord_chart::Error) -> Self {
-        Self(error)
+        use chord_chart::Error::*;
+        match &error {
+            NoNatural => Self::new("NoNatural", None),
+            InvalidNatural(natural) => Self::new("InvalidNatural", Some(&natural.to_string())),
+            InvalidNote(note) => Self::new("InvalidNote", Some(note)),
+            BarLineShouldStartWithStripe(line) => {
+                Self::new("BarLineShouldStartWithStripe", Some(line))
+            }
+            BarLineShouldEndWithStripe(line) => Self::new("BarLineShouldEndWithStripe", Some(line)),
+        }
     }
 }
 
 #[wasm_bindgen(js_name = validateChart)]
-pub fn validate_chart(chart: &str) -> Result<String, JsError> {
-    fn _validate(chart: &str) -> Result<String, Error> {
+pub fn validate_chart(chart: &str) -> Result<String, JsValue> {
+    fn _validate(chart: &str) -> Result<String, ValidationError> {
         Ok(chord_chart::Chart::from_str(chart)?.to_string())
     }
     Ok(_validate(chart)?)
 }
-
 #[wasm_bindgen(js_name = transposeChart)]
-pub fn transpose_chart(chart: &str, current_key: &str, new_key: &str) -> Result<String, JsError> {
-    fn _transpose(chart: &str, current_key: &str, new_key: &str) -> Result<String, Error> {
+pub fn transpose_chart(chart: &str, current_key: &str, new_key: &str) -> Result<String, JsValue> {
+    fn _transpose(
+        chart: &str,
+        current_key: &str,
+        new_key: &str,
+    ) -> Result<String, ValidationError> {
         let current_key_value = chord_chart::Note::from_str(current_key)?;
         let new_key_value = chord_chart::Note::from_str(new_key)?;
         Ok(chord_chart::Chart::from_str(chart)?

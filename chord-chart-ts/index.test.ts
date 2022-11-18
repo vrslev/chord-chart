@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { transposeChart, validateChart } from ".";
+import { transposeChart, validateChart, ValidationError } from ".";
 
 describe("validateChart", () => {
   it("works", () => {
@@ -7,8 +7,8 @@ describe("validateChart", () => {
   });
 
   it("throws", () => {
-    expect(() => validateChart("C")).toThrow(
-      "bar line should start with stripe: C"
+    expect(() => validateChart("C")).toThrowError(
+      new ValidationError("BarLineShouldStartWithStripe", "C")
     );
   });
 });
@@ -20,7 +20,7 @@ describe("transposeChart", () => {
 
   it("throws", () => {
     expect(() => transposeChart("C", "C", "C")).toThrow(
-      "bar line should start with stripe: C"
+      new ValidationError("BarLineShouldStartWithStripe", "C")
     );
   });
 });

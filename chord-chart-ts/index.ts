@@ -1,6 +1,23 @@
 import { initSync, transposeChart, validateChart } from "./pkg/chord_chart_ts";
 import wasm from "./pkg/chord_chart_ts_bg.wasm";
 
+type ErrorType =
+  | "NoNatural"
+  | "InvalidNatural"
+  | "InvalidNote"
+  | "BarLineShouldStartWithStripe"
+  | "BarLineShouldEndWithStripe";
+export class ValidationError extends Error {
+  type: ErrorType;
+  value?: string;
+
+  constructor(type_: ErrorType, value?: string) {
+    super();
+    this.type = type_;
+    this.value = value;
+  }
+}
+
 function decodeBase64(value: string) {
   let buf;
   const isNode =
