@@ -1,0 +1,32 @@
+name: Test JS
+
+on:
+  push:
+    paths:
+      - chord-chart-js/**
+    branches:
+      - main
+  pull_request:
+    paths:
+      - chord-chart-js/**
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: chord-chart-js/package-lock.json
+      - run: rustup update stable && rustup default stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cd chord-chart-js && npm ci
+      - run: cd chord-chart-js && npm test
