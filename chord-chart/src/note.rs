@@ -1,4 +1,4 @@
-use crate::{error::Error, transpose::Transpose};
+use crate::{error::Error, transpose::{Transpose, Scale}};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, Clone)]
@@ -47,11 +47,6 @@ enum Semitone {
     Nine,
     Ten,
     Eleven,
-}
-
-pub enum Scale {
-    Major,
-    Minor,
 }
 
 impl Note {

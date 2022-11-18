@@ -1,6 +1,6 @@
 use crate::chord::Chord;
 use crate::error::Error;
-use crate::transpose::Transpose;
+use crate::transpose::{Transpose, Scale};
 use std::str::FromStr;
 
 #[derive(Debug)]
@@ -29,7 +29,7 @@ impl ToString for Bar {
 }
 
 impl Transpose for Bar {
-    fn transpose(&self, semitone_incr: &i32, scale: &crate::note::Scale) -> Self {
+    fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         Bar(self
             .0
             .iter()
@@ -41,7 +41,7 @@ impl Transpose for Bar {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::note::Scale;
+    use super::Scale;
     use test_case::case;
 
     #[case("C Dm/F#", "C Dm/F#")]

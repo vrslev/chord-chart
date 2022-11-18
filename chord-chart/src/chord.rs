@@ -1,6 +1,6 @@
 use crate::error::Error;
-use crate::note::{Accidental, Note, Scale};
-use crate::transpose::Transpose;
+use crate::note::{Accidental, Note};
+use crate::transpose::{Transpose, Scale};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq)]

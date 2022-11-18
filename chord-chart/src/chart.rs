@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::{bar_line::BarLine, error::Error, transpose::Transpose};
+use crate::{bar_line::BarLine, error::Error, transpose::{Transpose, Scale}};
 
 pub struct Chart(Vec<BarLine>);
 
@@ -28,7 +28,7 @@ impl ToString for Chart {
 }
 
 impl Transpose for Chart {
-    fn transpose(&self, semitone_incr: &i32, scale: &crate::note::Scale) -> Self {
+    fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         Chart(
             self.0
                 .iter()
@@ -41,7 +41,7 @@ impl Transpose for Chart {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::note::Scale;
+    use super::Scale;
 
     #[test]
     fn basics() {
