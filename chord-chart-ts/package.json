@@ -1,5 +1,5 @@
 {
-  "name": "chord-chart",
+  "name": "chord-chart-wasm",
   "version": "0.1.0",
   "types": "index.d.ts",
   "main": "index.node.js",
