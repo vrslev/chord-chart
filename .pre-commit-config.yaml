@@ -29,7 +29,7 @@ repos:
         language: system
         types_or: [python]
         pass_filenames: false
-        entry: cd chord-chart-py && make pyright
+        entry: chord-chart-py/.venv/bin/pyright
 
       - id: tsc
         name: tsc
