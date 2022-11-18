@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+
+  - package-ecosystem: pip
+    directory: /chord-chart-py
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+
+  - package-ecosystem: npm
+    directory: /chord-chart-js
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
+
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "07:00"
