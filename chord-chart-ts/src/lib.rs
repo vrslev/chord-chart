@@ -28,8 +28,8 @@ pub fn validate_chart(chart: &str) -> Result<String, JsError> {
     Ok(_validate(chart)?)
 }
 
-#[wasm_bindgen(js_name = tranposeChart)]
-pub fn tranpose_chart(chart: &str, current_key: &str, new_key: &str) -> Result<String, JsError> {
+#[wasm_bindgen(js_name = transposeChart)]
+pub fn transpose_chart(chart: &str, current_key: &str, new_key: &str) -> Result<String, JsError> {
     fn _transpose(chart: &str, current_key: &str, new_key: &str) -> Result<String, Error> {
         let current_key_value = chord_chart::Note::from_str(current_key)?;
         let new_key_value = chord_chart::Note::from_str(new_key)?;

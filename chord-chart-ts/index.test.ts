@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { tranposeChart, validateChart } from ".";
+import { transposeChart, validateChart } from ".";
 
 describe("validateChart", () => {
   it("works", () => {
@@ -13,13 +13,13 @@ describe("validateChart", () => {
   });
 });
 
-describe("tranposeChart", () => {
+describe("transposeChart", () => {
   it("works", () => {
-    expect(tranposeChart("| D |", "D", "Gb")).toEqual("| Gb |");
+    expect(transposeChart("| D |", "D", "Gb")).toEqual("| Gb |");
   });
 
   it("throws", () => {
-    expect(() => tranposeChart("C", "C", "C")).toThrow(
+    expect(() => transposeChart("C", "C", "C")).toThrow(
       "bar line should start with stripe: C"
     );
   });

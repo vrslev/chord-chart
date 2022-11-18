@@ -1,24 +1,35 @@
 {
   "name": "chord-chart-wasm",
-  "version": "0.1.0",
-  "types": "index.d.ts",
-  "main": "index.node.js",
-  "browser": "index.browser.js",
-  "devDependencies": {
-    "shelljs": "0.8.5",
-    "vitest": "0.25.1"
-  },
+  "type": "module",
   "files": [
-    "index.browser.js",
-    "index.d.ts",
-    "index.node.js",
-    "index.web.js",
-    "pkg.bundler",
-    "pkg.node",
-    "pkg.web"
+    "dist"
   ],
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "src": "index.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "typescript": "4.9.3",
+    "vite": "3.2.4",
+    "vitest": "0.25.1",
+    "wasm-pack": "0.10.3",
+    "tsup": "6.5.0"
+  },
   "scripts": {
-    "build": "node build.js",
+    "clean": "rm -rf dist pkg",
+    "build:wasm": "wasm-pack build --target web",
+    "build:package": "vite build",
+    "build:types": "tsup index.ts --dts-only",
+    "build": "npm run clean && npm run build:wasm && npm run build:package && npm run build:types",
     "test": "npm run build && vitest --run"
-  }
+  },
+  "dependencies": {}
 }
