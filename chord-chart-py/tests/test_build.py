@@ -1,7 +1,6 @@
 import pytest
 
-from chord_chart import transpose_chart
-from chord_chart._chord_chart import ValidationError, validate_chart
+from chord_chart import ValidationError, transpose_chart, validate_chart
 
 
 def test_validate_chart_works():
@@ -14,7 +13,7 @@ def test_validate_chart_throws():
 
 
 def test_tranpose_chart_works():
-    assert transpose_chart("| D |", "D", "Gb") == "| Gb |"
+    assert transpose_chart("| D |", current_key="D", new_key="Gb") == "| Gb |"
 
 
 def test_tranpose_chart_throws():

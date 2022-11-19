@@ -14,7 +14,7 @@ install:
 
 test:
 	VIRTUAL_ENV=.venv .venv/bin/maturin develop
-	.venv/bin/pytest --color=yes
+	.venv/bin/pytest --color=yes --doctest-modules --doctest-glob="*.md"
 
 check-types:
 	.venv/bin/pyright

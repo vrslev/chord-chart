@@ -1,0 +1,24 @@
+# chord-chart
+
+This package provides chord chart validation and transposition functionality.
+
+It is written in Rust and has an accompanying [library](https://github.com/vrslev/chord-chart/tree/main/chord-chart-js) in JavaScript. Used in [vrslev/songbook](https://github.com/vrslev/songbook) — lyrics and chords website.
+
+Example:
+
+```py
+>>> from chord_chart import ValidationError, transpose_chart, validate_chart
+
+>>> # that's a valid chart: | *chord-with-bass-note* *chord-without-accidental* | *chord* | *(end of the bar, then new bar ->)*
+>>> # | *chord-with-accidental-and-symbols* |
+>>> validate_chart('''| A/E E | E | \n| C#m|''')
+'| A/E E | E |\n| C#m |'
+
+>>> validate_chart('A/E E\nC#m')  # chords without bars
+Traceback (most recent call last):
+...
+_chord_chart.ValidationError: bar line should start with stripe: A/E E
+
+>>> transpose_chart('| A/E| E |\n| C#m|', current_key='E', new_key='Db')
+'| Gb/Db | Db |\n| Bbm |'
+```

@@ -1,5 +1,6 @@
 {
   "venvPath": "chord-chart-py",
   "venv": ".venv",
-  "pythonVersion": "3.7"
+  "pythonVersion": "3.7",
+  "typeCheckingMode": "strict"
 }
