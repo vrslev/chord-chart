@@ -23,13 +23,18 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8", "pypy3.9"]
     steps:
       - uses: actions/checkout@v3
       - run: rustup update stable && rustup default stable
       - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.11
+          python-version: ${{ matrix.version }}
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pip

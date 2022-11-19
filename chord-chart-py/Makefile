@@ -8,7 +8,7 @@ clean:
 
 install:
 	make clean
-	python3.11 -m venv .venv
+	python -m venv .venv
 	.venv/bin/pip install maturin
 	.venv/bin/pip install -e .[test]
 
