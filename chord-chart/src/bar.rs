@@ -1,6 +1,6 @@
 use crate::chord::Chord;
 use crate::error::Error;
-use crate::transpose::{Transpose, Scale};
+use crate::transpose::{Scale, Transpose};
 use std::str::FromStr;
 
 #[derive(Debug)]
@@ -11,7 +11,7 @@ impl FromStr for Bar {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut vec = Vec::new();
-        for s in s.split_whitespace().into_iter() {
+        for s in s.split_whitespace() {
             vec.push(Chord::from_str(s)?);
         }
         Ok(Bar(vec))
@@ -40,8 +40,8 @@ impl Transpose for Bar {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::Scale;
+    use super::*;
     use test_case::case;
 
     #[case("C Dm/F#", "C Dm/F#")]

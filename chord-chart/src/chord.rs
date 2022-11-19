@@ -1,9 +1,9 @@
 use crate::error::Error;
 use crate::note::{Accidental, Note};
-use crate::transpose::{Transpose, Scale};
+use crate::transpose::{Scale, Transpose};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Chord {
     note: Note,
     symbols: String,
@@ -43,7 +43,7 @@ impl FromStr for Chord {
         let mut bass_note_value = String::new();
         let mut symbols = String::new();
 
-        for char in remaining_symbols.chars().into_iter() {
+        for char in remaining_symbols.chars() {
             if building_bass_note {
                 bass_note_value.push(char);
             } else if char == '/' {
@@ -84,7 +84,7 @@ impl ToString for Chord {
 impl Transpose for Chord {
     fn transpose(&self, semitone_incr: &i32, scale: &Scale) -> Self {
         Self::new(
-            Note::transpose(&self.note, &semitone_incr, &scale),
+            Note::transpose(&self.note, semitone_incr, scale),
             &self.symbols,
             self.bass_note
                 .as_ref()

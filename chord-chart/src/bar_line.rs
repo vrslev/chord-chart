@@ -1,6 +1,10 @@
 use std::str::FromStr;
 
-use crate::{bar::Bar, error::Error, transpose::{Transpose, Scale}};
+use crate::{
+    bar::Bar,
+    error::Error,
+    transpose::{Scale, Transpose},
+};
 
 #[derive(Debug)]
 pub struct BarLine(Vec<Bar>);
@@ -23,7 +27,7 @@ impl FromStr for BarLine {
         }
 
         let mut vec = Vec::new();
-        for bar in chars.as_str().split('|').into_iter() {
+        for bar in chars.as_str().split('|') {
             vec.push(Bar::from_str(bar)?);
         }
         Ok(BarLine(vec))
@@ -59,15 +63,15 @@ impl Transpose for BarLine {
 }
 
 impl BarLine {
-    pub fn is_empty(&self)->bool {
+    pub fn is_empty(&self) -> bool {
         self.0.is_empty()
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::Scale;
+    use super::*;
     use test_case::case;
 
     #[test]

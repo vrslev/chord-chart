@@ -9,5 +9,5 @@ mod transpose;
 
 pub use chart::Chart;
 pub use error::Error;
-pub use transpose::Transpose;
 pub use note::Note;
+pub use transpose::Transpose;

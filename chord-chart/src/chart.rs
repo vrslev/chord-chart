@@ -1,6 +1,10 @@
 use std::str::FromStr;
 
-use crate::{bar_line::BarLine, error::Error, transpose::{Transpose, Scale}};
+use crate::{
+    bar_line::BarLine,
+    error::Error,
+    transpose::{Scale, Transpose},
+};
 
 pub struct Chart(Vec<BarLine>);
 
@@ -9,7 +13,7 @@ impl FromStr for Chart {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut vec = Vec::new();
-        for line in s.split("\n").into_iter() {
+        for line in s.split('\n') {
             vec.push(BarLine::from_str(line)?);
         }
         Ok(Chart(vec))
@@ -40,8 +44,8 @@ impl Transpose for Chart {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use super::Scale;
+    use super::*;
 
     #[test]
     fn basics() {

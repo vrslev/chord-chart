@@ -1,7 +1,10 @@
-use crate::{error::Error, transpose::{Transpose, Scale}};
+use crate::{
+    error::Error,
+    transpose::{Scale, Transpose},
+};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Natural {
     C = 0,
     D = 2,
@@ -12,7 +15,7 @@ pub enum Natural {
     B = 11,
 }
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Accidental {
     Natural = 0,
     Flat = -1,
@@ -28,7 +31,7 @@ impl Accidental {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Note {
     natural: Natural,
     accidental: Accidental,
@@ -75,13 +78,12 @@ impl Note {
                 'A' => A,
                 'B' => B,
                 'H' => {
-                    match accidental_ch {
-                        Some(c) => match c {
+                    if let Some(c) = accidental_ch {
+                        match c {
                             'b' | 'B' => return Err(Error::InvalidNote("Hb")),
                             '#' => return Err(Error::InvalidNote("H#")),
                             _ => (),
-                        },
-                        _ => (),
+                        }
                     }
 
                     return Ok(Self::new(B, Natural));
@@ -111,7 +113,7 @@ impl Note {
         Ok(Self::new(natural, accidental))
     }
 
-    fn from_semitone_and_scale(&self, semitone: &Semitone, scale: &Scale) -> Self {
+    fn from_semitone_and_scale(semitone: &Semitone, scale: &Scale) -> Self {
         use self::Natural::*;
         use Accidental::*;
         use Semitone::*;
@@ -188,7 +190,7 @@ impl Transpose for Note {
                 _ => unreachable!(),
             };
 
-        self.from_semitone_and_scale(&semitone, scale)
+        Self::from_semitone_and_scale(&semitone, scale)
     }
 }
 

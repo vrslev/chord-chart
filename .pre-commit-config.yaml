@@ -1,4 +1,27 @@
 repos:
+  - repo: local
+    hooks:
+      - id: pyright
+        name: pyright
+        language: system
+        types_or: [python, pyi, pyproj]
+        pass_filenames: false
+        entry: ./chord-chart-py/.venv/bin/pyright
+
+      - id: tsc
+        name: tsc
+        language: system
+        types_or: [javascript, ts]
+        pass_filenames: false
+        entry: ./chord-chart-js/node_modules/.bin/tsc -p chord-chart-js/tsconfig.json --noEmit
+
+      - id: clippy
+        name: clippy
+        language: system
+        types: [rust]
+        pass_filenames: false
+        entry: cargo clippy
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
     hooks:
@@ -24,22 +47,15 @@ repos:
 
   - repo: local
     hooks:
-      - id: pyright
-        name: pyright
-        language: system
-        types_or: [python]
-        pass_filenames: false
-        entry: chord-chart-py/.venv/bin/pyright
-
-      - id: tsc
-        name: tsc
-        language: system
-        types_or: [javascript, ts]
-        pass_filenames: false
-        entry: cd chord-chart-js && npx tsc --noEmit
-
       - id: prettier
         name: prettier
         language: system
         types_or: [javascript, ts, json, yaml]
-        entry: cd chord-chart-js && npx prettier --write --list-different --ignore-unknown
+        entry: ./chord-chart-js/node_modules/.bin/prettier --write --list-different --ignore-unknown
+
+      - id: rustfmt
+        name: rustfmt
+        language: system
+        types: [rust]
+        pass_filenames: false
+        entry: cargo fmt
