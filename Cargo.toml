@@ -1,5 +1,6 @@
 [workspace]
 members = ["chord-chart", "chord-chart-py", "chord-chart-js"]
+package.version = "0.2.0"
 
 [profile.release]
 lto = true

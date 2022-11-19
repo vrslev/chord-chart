@@ -1,6 +1,6 @@
 {
   "name": "chord-chart-wasm",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Chord chart validation and transposition",
   "repository": {
     "type": "git",
