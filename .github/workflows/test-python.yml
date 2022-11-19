@@ -21,7 +21,23 @@ defaults:
     working-directory: chord-chart-py
 
 jobs:
-  build:
+  check-types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup update stable && rustup default stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: check-types-${{ hashFiles('chord-chart-py/pyproject.toml') }}
+      - run: make install
+      - run: make check-types
+
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -40,5 +56,4 @@ jobs:
           path: ~/.cache/pip
           key: test-${{ matrix-version}}-${{ hashFiles('chord-chart-py/pyproject.toml') }}
       - run: make install
-      - run: make check-types
       - run: make test
