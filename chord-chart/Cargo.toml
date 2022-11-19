@@ -4,4 +4,4 @@ version = "0.1.2"
 edition = "2021"
 
 [dev-dependencies]
-test-case = "=2.2.1"
+test-case = "=2.2.2"
