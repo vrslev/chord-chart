@@ -13,7 +13,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest==7.2.0", "pyright==1.1.279"]
+test = ["pytest==7.2.0", "pyright==1.1.280"]
 
 [tool.isort]
 profile = "black"
