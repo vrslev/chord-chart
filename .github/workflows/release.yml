@@ -90,6 +90,7 @@ jobs:
           node-version: 18
           cache: npm
           cache-dependency-path: chord-chart-js/package-lock.json
+          registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
       - run: npm publish
