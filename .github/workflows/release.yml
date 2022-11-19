@@ -3,8 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - py-v*
-  workflow_dispatch:
+      - v*
 
 env:
   CARGO_TERM_COLOR: always
