@@ -8,4 +8,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 chord-chart = { path = "../chord-chart" }
-wasm-bindgen = "0.2.74"
+wasm-bindgen = "=0.2.83"
