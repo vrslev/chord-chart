@@ -9,11 +9,8 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -22,20 +19,7 @@ jobs:
           python-version: 3.11
       - uses: actions/cache@v3
         with:
-          path: ~/.cache/pip
-          key: py-${{ hashFiles('chord-chart-py/pyproject.toml') }}
-      - uses: actions/cache@v3
-        with:
           path: ~/.cache/pre-commit
-          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
-          cache-dependency-path: chord-chart-js/package-lock.json
-      - run: rustup update stable && rustup default stable
-      - uses: Swatinem/rust-cache@v2
-      - run: cd chord-chart-py && make install
-      - run: cd chord-chart-js && npm ci
-      - run: cd chord-chart-js && npm run build
-      - run: chord-chart-py/.venv/bin/pre-commit run --color=always --all-files
+          key: ${{ hashFiles('.pre-commit-config.yaml') }}
+      - run: pip install pre-commit
+      - run: pre-commit run --color=always --all-files
