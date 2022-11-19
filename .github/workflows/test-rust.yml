@@ -2,13 +2,9 @@ name: Test Rust
 
 on:
   push:
-    paths:
-      - chord-chart/**
     branches:
       - main
   pull_request:
-    paths:
-      - chord-chart/**
     branches:
       - main
   workflow_dispatch:
