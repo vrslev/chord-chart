@@ -1,5 +1,8 @@
 # Python and JavaScript library for chord chart validation and transposition.
 
+[![pypi](https://img.shields.io/pypi/dm/chord-chart?label=pypi)](https://pypi.org/project/chord-chart)
+[![npm](https://img.shields.io/npm/dm/chord-chart-wasm?label=npm)](https://www.npmjs.com/package/chord-chart-wasm)
+
 Validate & format chart in this format:
 
 ```
