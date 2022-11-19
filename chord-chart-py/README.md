@@ -2,7 +2,7 @@
 
 This package provides chord chart validation and transposition functionality.
 
-It is written in Rust and has an accompanying [library](https://github.com/vrslev/chord-chart/tree/main/chord-chart-js) in JavaScript. Used in [vrslev/songbook](https://github.com/vrslev/songbook) — lyrics and chords website.
+It is written in Rust and has an accompanying [library](https://github.com/vrslev/chord-chart/tree/main/chord-chart-js) in JavaScript. Used in [vrslev/songbook](https://github.com/vrslev/songbook) — lyrics and chords webapp.
 
 ## Example
 
@@ -25,7 +25,7 @@ _chord_chart.ValidationError: bar line should start with stripe: A/E E
 
 ## Installation
 
-Just `pip install chord-chart`.
+Just `pip install chord-chart` on Python 3.7 to 3.11.
 
 ## Development
 
