@@ -1,21 +1,26 @@
 {
   "name": "chord-chart-wasm",
+  "version": "0.1.2",
+  "description": "Chord chart validation and transposition",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrslev/chord-chart.git"
+  },
+  "keywords": [
+    "chords",
+    "music",
+    "parsing",
+    "rust"
+  ],
+  "author": "vrslev",
+  "license": "MIT",
+  "readme": "README.md",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "version": "0.1.1",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "src": "index.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
   "devDependencies": {
     "tsup": "6.5.0",
     "typescript": "4.9.3",
