@@ -1,4 +1,6 @@
-# Rust, Python and JavaScript library for chord chart represenation and transposition.
+# Python and JavaScript library for chord chart validation and transposition.
+
+→ Check Python package
 
 **WIP.**
 
