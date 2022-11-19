@@ -1,6 +1,13 @@
 .PHONY: install test
 
+clean:
+	rm -rf `find . -name __pycache__`
+	rm -rf .pytest_cache
+	rm -rf .venv
+	rm -rf chord_chart/*.so
+
 install:
+	make clean
 	python3.11 -m venv .venv
 	.venv/bin/pip install maturin
 	.venv/bin/pip install -e .[test]
