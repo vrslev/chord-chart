@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "chord-chart"
 requires-python = ">=3.7"
 description = "Chord chart validation and transposition"
-# readme = "README. md"
+readme = "README.md"
 authors = [{ name = "Lev Vereshchagin", email = "mail@vrslev.com" }]
 license = { file = "../LICENSE" }
 classifiers = [
