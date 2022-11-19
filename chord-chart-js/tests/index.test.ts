@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { transposeChart, validateChart, ValidationError } from ".";
+import { transposeChart, validateChart, ValidationError } from "../dist";
 
 describe("validateChart", () => {
   it("works", () => {

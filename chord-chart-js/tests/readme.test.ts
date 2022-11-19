@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { transposeChart, validateChart, ValidationError } from ".";
+import { transposeChart, validateChart, ValidationError } from "../dist";
 
 it("works", () => {
   expect(validateChart("| A/E E | E | \n| C#m|")).toEqual(
