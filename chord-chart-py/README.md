@@ -21,6 +21,7 @@ _chord_chart.ValidationError: bar line should start with stripe: A/E E
 
 >>> transpose_chart('| A/E| E |\n| C#m|', current_key='E', new_key='Db')
 '| Gb/Db | Db |\n| Bbm |'
+
 ```
 
 ## Installation
