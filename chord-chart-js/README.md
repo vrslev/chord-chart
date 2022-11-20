@@ -10,17 +10,16 @@ Here's an example tests that describe ins and outs of the available functions:
 
 ```js
 import { expect, it } from "vitest";
-import {
-  transposeChart,
-  validateChart,
-  ValidationError,
-} from "chord-chard-wasm";
+import { transposeChart, validateChart, ValidationError } from "../dist";
 
 it("works", () => {
+  // that's a valid chart: | *chord-with-bass-note* *chord-without-accidental* | *chord* | *(end of the bar, then new bar ->)*
+  // | *chord-with-accidental-and-symbols* |
   expect(validateChart("| A/E E | E | \n| C#m|")).toEqual(
     "| A/E E | E |\n| C#m |"
   );
 
+  // and that's not a valid one: chords without stripes between lines of bars
   expect(() => validateChart("A/E E\nC#m")).toThrow(
     new ValidationError("BarLineShouldStartWithStripe", "A/E E")
   );

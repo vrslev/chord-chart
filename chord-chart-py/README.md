@@ -14,7 +14,7 @@ It is written in Rust and has an accompanying [library](https://github.com/vrsle
 >>> validate_chart('| A/E E | E | \n| C#m|')
 '| A/E E | E |\n| C#m |'
 
->>> validate_chart('A/E E\nC#m')  # and that's not a valid one: chords without bars
+>>> validate_chart('A/E E\nC#m')  # and that's not a valid one: chords without stripes between lines of bars
 Traceback (most recent call last):
 ...
 _chord_chart.ValidationError: bar line should start with stripe: A/E E
