@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: rustup update stable && rustup default stable
-      - uses: Swatinem/rust-cache@v2
+      # - uses: Swatinem/rust-cache@v2
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.version }}
