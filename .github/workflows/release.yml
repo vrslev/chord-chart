@@ -27,7 +27,7 @@ jobs:
         with:
           manylinux: auto
           command: build
-          args: --release --sdist -o dist --find-interpreter -m chord-chart-py/Cargo.toml
+          args: --release --sdist -o dist --interpreter 3.7 3.8 3.9 3.10 3.11 -m chord-chart-py/Cargo.toml
       - uses: actions/upload-artifact@v3
         with:
           name: wheels
@@ -41,7 +41,7 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: build
-          args: --release -o dist --find-interpreter -m chord-chart-py/Cargo.toml
+          args: --release -o dist --interpreter 3.7 3.8 3.9 3.10 3.11 -m chord-chart-py/Cargo.toml
       - uses: actions/upload-artifact@v3
         with:
           name: wheels
@@ -55,7 +55,7 @@ jobs:
       - uses: PyO3/maturin-action@v1
         with:
           command: build
-          args: --release -o dist --universal2 --find-interpreter -m chord-chart-py/Cargo.toml
+          args: --release -o dist --universal2 --interpreter 3.7 3.8 3.9 3.10 3.11 -m chord-chart-py/Cargo.toml
       - uses: actions/upload-artifact@v3
         with:
           name: wheels

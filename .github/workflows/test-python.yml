@@ -42,8 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version:
-          ["3.7", "3.8", "3.9", "3.10", "3.11", "pypy3.7", "pypy3.8", "pypy3.9"]
+        version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
       - uses: actions/checkout@v3
       - run: rustup update stable && rustup default stable
@@ -54,6 +53,6 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: test-${{ matrix.version}}-${{ hashFiles('chord-chart-py/pyproject.toml') }}
+          key: test-${{ matrix.version }}-${{ hashFiles('chord-chart-py/pyproject.toml') }}
       - run: make install
       - run: make test
