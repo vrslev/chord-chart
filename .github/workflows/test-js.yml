@@ -9,8 +9,6 @@ on:
   pull_request:
     paths:
       - chord-chart-js/**
-    branches:
-      - main
   workflow_dispatch:
 
 env:
