@@ -6,6 +6,7 @@ export default defineConfig({
       "@index": "../index",
     },
   },
+  define: { "typeof input === 'undefined'": false },
   assetsInclude: ["**/*.wasm"],
   build: {
     lib: {

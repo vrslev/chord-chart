@@ -1,7 +1,9 @@
 import { expect, it } from "vitest";
-import { transposeChart, validateChart, ValidationError } from "../dist";
+import init, { transposeChart, validateChart, ValidationError } from "../";
 
-it("works", () => {
+it("works", async () => {
+  await init();
+
   // that's a valid chart: | *chord-with-bass-note* *chord-without-accidental* | *chord* | *(end of the bar, then new bar ->)*
   // | *chord-with-accidental-and-symbols* |
   expect(validateChart("| A/E E | E | \n| C#m|")).toEqual(

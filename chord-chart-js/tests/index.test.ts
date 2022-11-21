@@ -1,5 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { transposeChart, validateChart, ValidationError } from "../dist";
+import { beforeAll, describe, expect, it } from "vitest";
+import init, { transposeChart, validateChart, ValidationError } from "../";
+
+beforeAll(async () => {
+  await init();
+});
 
 describe("validateChart", () => {
   it("works", () => {
