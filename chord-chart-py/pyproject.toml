@@ -32,7 +32,7 @@ classifiers = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-test = ["pytest==7.2.0", "pyright==1.1.284"]
+test = ["pytest==7.2.0", "pyright==1.1.287"]
 
 [project.urls]
 Homepage = 'https://github.com/vrslev/chord-chart'
